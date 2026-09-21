@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ judul }} — TINote{% endblock %}
+{% block content %}
+<div class="card brutal-card p-6 max-w-lg">
+<h1 class="text-xl font-bold mb-4">{{ judul }}</h1>
+<form method="post" class="space-y-3">{% csrf_token %}
+<div><label class="label text-sm font-bold">NIM</label>{{ form.nim }}</div>
+<div><label class="label text-sm font-bold">Nama</label>{{ form.nama }}</div>
+<div><label class="label text-sm font-bold">Role</label>{{ form.role }}</div>
+<div><label class="label text-sm font-bold">PIN (6 digit, opsional pas edit)</label>{{ form.pin }}{% if form.pin.errors %}<p class="text-error text-xs">{{ form.pin.errors.0 }}</p>{% endif %}</div>
+{% if form.non_field_errors %}<p class="text-error text-xs">{{ form.non_field_errors.0 }}</p>{% endif %}
+<button class="btn brutal-btn">Simpan</button>
+<a href="{% url 'accounts:user_list' %}" class="btn btn-ghost">Batal</a>
+</form>
+</div>
+{% endblock %}

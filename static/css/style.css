@@ -1,0 +1,79 @@
+* { font-family: 'Space Mono', monospace !important; }
+body { background: #FFF6E9; color: #111; }
+[data-theme="dark"] body, [data-theme="dark"] { background: #1a1a1a !important; color: #f5f5f5 !important; }
+
+.brutal-card {
+  border: 2px solid #111 !important;
+  box-shadow: 4px 4px 0 #111 !important;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+[data-theme="dark"] .brutal-card { background: #222 !important; border-color: #f5f5f5 !important; box-shadow: 4px 4px 0 #000 !important; }
+
+.brutal-btn {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+  border-radius: 0.5rem;
+  background: #FFD23F;
+  color: #111;
+  font-weight: 700;
+  transition: transform .1s, box-shadow .1s, background .15s, color .15s;
+}
+.brutal-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #111 !important; background: #111 !important; color: #FFD23F !important; }
+.brutal-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #111 !important; }
+[data-theme="dark"] .brutal-btn { border-color: #f5f5f5 !important; box-shadow: 3px 3px 0 #000 !important; }
+[data-theme="dark"] .brutal-btn:hover { background: #FFD23F !important; color: #111 !important; box-shadow: 4px 4px 0 #000 !important; }
+
+/* Ghost / kecil biar hover tetap kontras */
+.btn-ghost:hover { background: #111 !important; color: #FFF6E9 !important; }
+[data-theme="dark"] .btn-ghost:hover { background: #f5f5f5 !important; color: #111 !important; }
+.btn-error:hover { filter: brightness(.9); color: #fff !important; }
+
+/* Ikon outline — ukuran ngikut font biar konsisten */
+.icon { width: 1.15em; height: 1.15em; flex: none; flex-shrink: 0; display: inline-block; vertical-align: -0.18em; }
+.icon-sm { width: 0.95em; height: 0.95em; }
+.icon-lg { width: 1.45em; height: 1.45em; vertical-align: -0.22em; }
+/* Otomatis kecil di konteks teks kecil biar proporsional */
+.badge .icon, .text-xs .icon { width: 0.95em; height: 0.95em; vertical-align: -0.12em; }
+.btn-xs .icon, .btn-sm .icon { width: 1.1em; height: 1.1em; }
+h1 .icon, h2 .icon { vertical-align: -0.2em; }
+
+.brutal-nav { background: #fff !important; border-bottom: 3px solid #111; }
+[data-theme="dark"] .brutal-nav { background: #222 !important; border-color: #f5f5f5 !important; }
+
+.brutal-side { background: #fff !important; border-right: 3px solid #111; }
+[data-theme="dark"] .brutal-side { background: #1e1e1e !important; border-color: #f5f5f5 !important; }
+
+.brutal-input { border: 2px solid #111 !important; border-radius: 0.5rem !important; }
+.brutal-input:focus { box-shadow: 3px 3px 0 #111 !important; outline: none; }
+
+/* Filter dashboard — pill horizontal 1 baris ala referensi, geser di layar kecil */
+.dashboard-filter { scrollbar-width: thin; }
+.dashboard-filter > * { flex-shrink: 0; }
+.dashboard-filter .label { margin-bottom: 0.15rem; }
+.filter-pill { display: flex; align-items: center; gap: 0.6rem; flex-wrap: nowrap; overflow-x: auto; background: #161616; border: 2px solid #111; border-radius: 999px; padding: 0.45rem 0.55rem 0.45rem 0.45rem; box-shadow: 4px 4px 0 #111; scrollbar-width: thin; }
+[data-theme="dark"] .filter-pill { background: #0f0f0f; border-color: #f5f5f5; box-shadow: 4px 4px 0 #000; }
+.filter-logo { width: 2.75rem; height: 2.75rem; border-radius: 999px; background: #222; border: 1px solid rgba(255,255,255,0.28); color: #fff; display: flex; align-items: center; justify-content: center; flex: none; }
+.filter-segments { display: flex; align-items: center; flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; overflow-x: auto; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 0.35rem 0.9rem; scrollbar-width: thin; }
+.filter-seg { display: flex; align-items: center; flex: none; }
+.filter-field { background: transparent; border: none; outline: none; color: #fff; font-size: 0.85rem; }
+.filter-field::placeholder { color: rgba(255,255,255,0.55); }
+.filter-field option { color: #111; }
+.filter-divider { width: 1px; align-self: stretch; background: rgba(255,255,255,0.28); margin: 0.15rem 0.7rem; flex: none; }
+.filter-actions { display: flex; align-items: center; gap: 0.5rem; flex: none; }
+.pill-btn { border-radius: 999px !important; }
+
+.done-card { opacity: .75; }
+.done-card .judul { text-decoration: line-through; }
+
+/* Matkul — agak besar biar nyaman di laptop, tetap proporsional */
+.matkul-card { line-height: 1.6; }
+.matkul-card .matkul-title { font-size: 1.05rem; line-height: 1.5; }
+.matkul-card .matkul-meta { font-size: 0.875rem; line-height: 1.65; }
+.matkul-card .badge { font-size: 0.75rem; }
+@media (min-width: 768px) {
+  .matkul-card { line-height: 1.65; }
+  .matkul-card .matkul-title { font-size: 1.2rem; }
+  .matkul-card .matkul-meta { font-size: 0.95rem; }
+  .matkul-card .badge { font-size: 0.8rem; }
+}

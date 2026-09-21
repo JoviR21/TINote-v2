@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Hapus Pengumuman — TINote{% endblock %}
+{% block content %}
+<div class="card brutal-card p-6 max-w-lg">
+<h1 class="text-xl font-bold mb-2">Hapus "{{ obj.judul }}"?</h1>
+<p class="text-sm opacity-70 mb-4">Yakin? Komentar + status selesai ikut kehapus.</p>
+<form method="post" class="flex gap-2">{% csrf_token %}<button class="btn btn-error">Ya, hapus</button><a href="{% url 'announcements:detail' obj.pk %}" class="btn btn-ghost">Batal</a></form>
+</div>
+{% endblock %}

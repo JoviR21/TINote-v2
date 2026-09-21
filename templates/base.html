@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}TINote{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script>
+tailwind.config = { darkMode: ['class', '[data-theme="dark"]'] }
+</script>
+</head>
+<body class="min-h-screen">
+{% if user.is_authenticated %}
+<div class="drawer lg:drawer-open">
+  <input id="side" type="checkbox" class="drawer-toggle">
+  <div class="drawer-content flex flex-col min-h-screen">
+    <div class="navbar brutal-nav sticky top-0 z-30 px-4">
+      <div class="flex-none lg:hidden">
+        <label for="side" class="btn btn-square btn-ghost" aria-label="Menu"><svg class="icon icon-lg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg></label>
+      </div>
+      <div class="flex-1">
+        <a href="{% url 'announcements:dashboard' %}" class="text-xl font-bold tracking-tight">TINote<span class="badge badge-primary ml-2">kelas</span></a>
+      </div>
+      <div class="flex-none flex items-center gap-2">
+        <span class="hidden sm:inline text-xs opacity-70">{{ user.nim }} • {{ user.role }}</span>
+        <button id="themeToggle" class="btn btn-sm brutal-btn" title="Ganti terang/gelap"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 12 21.75a9.753 9.753 0 0 0 9.752-6.748Z"/></svg><span class="hidden sm:inline ml-1">Tema</span></button>
+        <a href="{% url 'accounts:logout' %}" class="btn btn-sm brutal-btn"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"/></svg><span class="ml-1">Keluar</span></a>
+      </div>
+    </div>
+    <main class="p-4 md:p-6 max-w-6xl w-full mx-auto">
+      {% if messages %}
+      <div class="space-y-2 mb-4">
+        {% for m in messages %}
+        <div class="alert brutal-card {% if m.tags == 'error' %}alert-error{% elif m.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
+          <span class="text-sm">{{ m }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <div class="drawer-side z-40">
+    <label for="side" class="drawer-overlay"></label>
+    <aside class="w-64 min-h-full brutal-side p-4 flex flex-col gap-2">
+      <div class="font-bold text-lg mb-2">Halo, {{ user.nama }}!</div>
+      <a href="{% url 'announcements:dashboard' %}" class="btn brutal-btn justify-start"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h4M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg><span class="ml-1">Dashboard</span></a>
+      <a href="{% url 'matkul:list' %}" class="btn brutal-btn justify-start"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg><span class="ml-1">Mata Kuliah</span></a>
+      {% if user.role == "staff" %}
+      <div class="divider text-xs">STAFF AJA</div>
+      <a href="{% url 'announcements:create' %}" class="btn brutal-btn justify-start"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg><span class="ml-1">Pengumuman</span></a>
+      <a href="{% url 'matkul:create' %}" class="btn brutal-btn justify-start"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg><span class="ml-1">Matkul</span></a>
+      <a href="{% url 'accounts:user_list' %}" class="btn brutal-btn justify-start"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg><span class="ml-1">Kelola User</span></a>
+      {% endif %}
+      <div class="divider"></div>
+      <a href="{% url 'accounts:ganti_pin' %}" class="btn brutal-btn justify-start"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"/></svg><span class="ml-1">Ganti PIN</span></a>
+      <div class="mt-auto text-xs opacity-60">TINote • santai tapi rapi<br>{{ user.nim }}</div>
+    </aside>
+  </div>
+</div>
+{% else %}
+<main class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    {% if messages %}
+    <div class="space-y-2 mb-4">
+      {% for m in messages %}
+      <div class="alert brutal-card {% if m.tags == 'error' %}alert-error{% else %}alert-info{% endif %}"><span class="text-sm">{{ m }}</span></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% block auth_content %}{% endblock %}
+  </div>
+</main>
+{% endif %}
+<script src="{% static 'js/theme.js' %}"></script>
+</body>
+</html>

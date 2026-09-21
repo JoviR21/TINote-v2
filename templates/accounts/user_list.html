@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Kelola User — TINote{% endblock %}
+{% block content %}
+<div class="flex flex-wrap gap-2 items-center mb-4">
+  <h1 class="text-xl font-bold flex-1 inline-flex items-center gap-2"><svg class="icon icon-lg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg>Kelola User</h1>
+  <a href="{% url 'accounts:user_create' %}" class="btn btn-sm brutal-btn"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg><span class="ml-1">Tambah</span></a>
+  <a href="{% url 'accounts:user_import' %}" class="btn btn-sm brutal-btn"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg><span class="ml-1">Import CSV</span></a>
+</div>
+<form method="get" class="flex gap-2 mb-4">
+  <input name="q" value="{{ q }}" placeholder="Cari NIM / nama..." class="input input-bordered brutal-input flex-1">
+  <button class="btn brutal-btn">Cari</button>
+</form>
+<div class="overflow-x-auto brutal-card">
+<table class="table w-full text-sm">
+<thead><tr><th>NIM</th><th>Nama</th><th>Role</th><th>Aksi</th></tr></thead>
+<tbody>
+{% for u in users %}
+<tr>
+  <td class="font-bold">{{ u.nim }}</td><td>{{ u.nama }}</td>
+  <td><span class="badge {% if u.role == 'staff' %}badge-primary{% else %}badge-ghost{% endif %}">{{ u.role }}</span></td>
+  <td class="flex flex-wrap gap-1">
+    <a href="{% url 'accounts:user_edit' u.pk %}" class="btn btn-xs brutal-btn">Edit</a>
+    <form method="post" action="{% url 'accounts:user_reset_pin' u.pk %}" onsubmit="return confirm('Reset PIN {{ u.nim }} jadi random?')">{% csrf_token %}<button class="btn btn-xs brutal-btn">Reset PIN</button></form>
+    <a href="{% url 'accounts:user_delete' u.pk %}" class="btn btn-xs btn-error">Hapus</a>
+  </td>
+</tr>
+{% empty %}<tr><td colspan="4" class="text-center opacity-60">Belum ada user yang cocok.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

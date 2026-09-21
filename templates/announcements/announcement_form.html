@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ judul }} — TINote{% endblock %}
+{% block content %}
+<div class="card brutal-card p-6 max-w-2xl">
+<h1 class="text-xl font-bold mb-4">{{ judul }}</h1>
+<form method="post" class="space-y-3">{% csrf_token %}
+<div><label class="label text-sm font-bold">Judul</label>{{ form.judul }}</div>
+<div class="grid md:grid-cols-2 gap-2">
+<div><label class="label text-sm font-bold">Kategori</label>{{ form.kategori }}</div>
+<div><label class="label text-sm font-bold">Matkul (opsional)</label>{{ form.matkul }}</div>
+</div>
+<div><label class="label text-sm font-bold">Deskripsi</label>{{ form.deskripsi }}</div>
+<div><label class="label text-sm font-bold">Deadline</label>{{ form.deadline }}<p class="text-xs opacity-60 mt-1">Format: tanggal + jam, misal 25/12/2026 23:59.</p></div>
+<div class="grid md:grid-cols-2 gap-2">
+<div><label class="label text-sm font-bold">Lokasi (opsional)</label>{{ form.lokasi }}</div>
+<div><label class="label text-sm font-bold">Link (opsional)</label>{{ form.link }}</div>
+</div>
+{% if form.errors %}<div class="text-error text-xs">{{ form.errors }}</div>{% endif %}
+<button class="btn brutal-btn">Simpan</button>
+<a href="{% url 'announcements:dashboard' %}" class="btn btn-ghost">Batal</a>
+</form>
+</div>
+{% endblock %}

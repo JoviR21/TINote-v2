@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ judul }} — TINote{% endblock %}
+{% block content %}
+<div class="card brutal-card p-6 max-w-lg">
+<h1 class="text-xl font-bold mb-4">{{ judul }}</h1>
+<form method="post" class="space-y-3">{% csrf_token %}
+<div><label class="label text-sm font-bold">Kode</label>{{ form.kode }}</div>
+<div><label class="label text-sm font-bold">Nama</label>{{ form.nama }}</div>
+<div><label class="label text-sm font-bold">Dosen</label>{{ form.dosen }}</div>
+<div class="grid md:grid-cols-2 gap-2">
+<div><label class="label text-sm font-bold">No. WA Dosen (opsional)</label>{{ form.no_wa_dosen }}{% if form.no_wa_dosen.errors %}<p class="text-error text-xs mt-1">{{ form.no_wa_dosen.errors.0 }}</p>{% endif %}</div>
+<div><label class="label text-sm font-bold">SKS (1-6)</label>{{ form.sks }}{% if form.sks.errors %}<p class="text-error text-xs mt-1">{{ form.sks.errors.0 }}</p>{% endif %}</div>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div><label class="label text-sm font-bold">Hari</label>{{ form.hari }}</div>
+<div><label class="label text-sm font-bold">Mulai</label>{{ form.jam_mulai }}</div>
+<div><label class="label text-sm font-bold">Selesai</label>{{ form.jam_selesai }}</div>
+</div>
+<div><label class="label text-sm font-bold">Ruang</label>{{ form.ruang }}</div>
+{% if form.errors %}<div class="text-error text-xs">{{ form.errors }}</div>{% endif %}
+<button class="btn brutal-btn">Simpan</button>
+<a href="{% url 'matkul:list' %}" class="btn btn-ghost">Batal</a>
+</form>
+</div>
+{% endblock %}

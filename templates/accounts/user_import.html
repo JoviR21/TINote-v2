@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Import CSV — TINote{% endblock %}
+{% block content %}
+<div class="card brutal-card p-6 max-w-2xl">
+<h1 class="text-xl font-bold mb-1 inline-flex items-center gap-2"><svg class="icon icon-lg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>Import User Massal</h1>
+<p class="text-sm opacity-70 mb-4">Format per baris: <code>NIM,Nama,Role,PIN</code> — contoh: <code>TI001,Budi Santai,mahasiswa,123456</code></p>
+<form method="post" enctype="multipart/form-data" class="flex flex-wrap gap-2 items-end">{% csrf_token %}
+<div class="flex-1">{{ form.file }}</div>
+<button class="btn brutal-btn">Upload</button>
+<a href="{% url 'accounts:user_list' %}" class="btn btn-ghost">Kembali</a>
+</form>
+{% if hasil %}
+<div class="mt-4 text-sm">
+<p>Masuk: <b>{{ hasil.ok }}</b> • Gagal: <b>{{ hasil.gagal }}</b></p>
+{% if hasil.errors %}<ul class="list-disc ml-5 mt-2 opacity-80">{% for e in hasil.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+</div>
+{% endif %}
+</div>
+{% endblock %}

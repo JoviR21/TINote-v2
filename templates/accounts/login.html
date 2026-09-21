@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Masuk — TINote{% endblock %}
+{% block auth_content %}
+<div class="card brutal-card p-6">
+  <h1 class="text-2xl font-bold inline-flex items-center gap-2">TINote<svg class="icon icon-lg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.862 4.487Zm0 0L19.5 7.125"/></svg></h1>
+  <p class="text-sm opacity-70 mt-1 mb-4">Masuk dulu yuk, semua info kelas ada di dalam.</p>
+  <form method="post" class="space-y-3">
+    {% csrf_token %}
+    <div>
+      <label class="label text-sm font-bold">NIM</label>
+      {{ form.nim }}
+      {% if form.nim.errors %}<p class="text-error text-xs mt-1">{{ form.nim.errors.0 }}</p>{% endif %}
+    </div>
+    <div>
+      <label class="label text-sm font-bold">PIN (6 digit)</label>
+      {{ form.pin }}
+      {% if form.pin.errors %}<p class="text-error text-xs mt-1">{{ form.pin.errors.0 }}</p>{% endif %}
+      <label class="flex items-center gap-2 text-xs mt-2 cursor-pointer opacity-80">
+        <input type="checkbox" id="showPin" class="checkbox checkbox-bordered checkbox-sm">
+        Lihat PIN
+      </label>
+    </div>
+    <label class="flex items-center gap-2 text-sm cursor-pointer">
+      <input type="checkbox" name="remember_me" class="checkbox checkbox-bordered" {% if form.remember_me.value %}checked{% endif %}>
+      Ingat saya 3 hari
+    </label>
+    {% if form.non_field_errors %}<p class="text-error text-xs">{{ form.non_field_errors.0 }}</p>{% endif %}
+    <button class="btn brutal-btn w-full inline-flex items-center justify-center gap-1">Masuk<svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></button>
+  </form>
+  <p class="text-xs opacity-60 mt-4">Lupa PIN? Santai, minta reset ke staff ya.</p>
+</div>
+<script>
+(function () {
+  const box = document.getElementById('showPin');
+  const pin = document.getElementById('id_pin');
+  if (box && pin) box.addEventListener('change', () => { pin.type = box.checked ? 'text' : 'password'; });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — TINote{% endblock %}
+{% block content %}
+<h1 class="text-xl font-bold mb-1 flex items-center gap-2"><svg class="icon icon-lg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h4M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg>Dashboard</h1>
+<p class="text-sm opacity-70 mb-4">Pantau jadwal, tugas, sama event di satu tempat. Santai aja.</p>
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+  <div class="card brutal-card p-3"><div class="text-xs opacity-60">Total tampil</div><div class="text-2xl font-bold">{{ stat.total }}</div></div>
+  <div class="card brutal-card p-3"><div class="text-xs opacity-60">Deket deadline ≤3 hari</div><div class="text-2xl font-bold">{{ stat.hampir }}</div></div>
+  <div class="card brutal-card p-3"><div class="text-xs opacity-60">Udah kamu selesaikan</div><div class="text-2xl font-bold">{{ stat.selesai }}</div></div>
+  <div class="card brutal-card p-3"><div class="text-xs opacity-60">Terlewat</div><div class="text-2xl font-bold">{{ stat.lewat }}</div></div>
+</div>
+
+<form method="get" class="filter-pill mb-4">
+  <div class="filter-segments">
+    <div class="filter-seg"><input name="q" value="{{ q }}" placeholder="Cari tugas / webinar..." aria-label="Cari" class="filter-field w-36 md:w-44"></div>
+    <div class="filter-divider"></div>
+    <div class="filter-seg"><select name="matkul" aria-label="Matkul" title="Filter matkul" class="filter-field w-36 md:w-48">
+      <option value="">Semua matkul</option>
+      {% for m in matkuls %}<option value="{{ m.id }}" {% if matkul_id == m.id|stringformat:"s" %}selected{% endif %}>{{ m.kode }} — {{ m.nama }}</option>{% endfor %}
+    </select></div>
+    <div class="filter-divider"></div>
+    <div class="filter-seg"><select name="urut" aria-label="Urut deadline" title="Urut deadline" class="filter-field w-32 md:w-36">
+      <option value="terdekat" {% if urut == "terdekat" %}selected{% endif %}>Terdekat dulu</option>
+      <option value="terjauh" {% if urut == "terjauh" %}selected{% endif %}>Terjauh dulu</option>
+    </select></div>
+  </div>
+  <div class="filter-actions">
+  <button class="btn btn-sm brutal-btn pill-btn">Terapkan</button>
+  {% if is_staff %}<a href="{% url 'announcements:create' %}" class="btn btn-sm brutal-btn pill-btn"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg><span class="ml-1">Baru</span></a>{% endif %}
+  </div>
+</form>
+
+<div class="grid md:grid-cols-2 xl:grid-cols-3 gap-3">
+{% for a in items %}
+<div class="card brutal-card p-4 {% if a.sudah_selesai %}done-card{% endif %}">
+  <div class="flex gap-2 items-center mb-2">
+    <span class="badge badge-outline text-xs">{{ a.get_kategori_display }}</span>
+    <span class="badge {{ a.badge_warna }} text-xs">{{ a.badge_label }}</span>
+    {% if a.sudah_selesai %}<span class="badge badge-success text-xs inline-flex items-center gap-1"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>selesai</span>{% endif %}
+    <span class="ml-auto text-xs opacity-60 inline-flex items-center gap-1"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm3.75 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm3.75 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"/></svg>{{ a.jumlah_komentar }}</span>
+  </div>
+  <a href="{% url 'announcements:detail' a.pk %}" class="font-bold judul leading-snug hover:underline">{{ a.judul }}</a>
+  <div class="text-xs opacity-70 mt-1">
+    {% if a.matkul %}{{ a.matkul.kode }} • {{ a.matkul.nama }} ({{ a.matkul.sks }} SKS)<br><span class="inline-flex items-center gap-1"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>{{ a.matkul.dosen }}{% if a.matkul.wa_link %} • <a href="{{ a.matkul.wa_link }}" target="_blank" class="link link-primary">WA</a>{% endif %} • {{ a.matkul.hari }}, {{ a.matkul.jam_mulai|time:"H:i" }}–{{ a.matkul.jam_selesai|time:"H:i" }}</span>
+    {% else %}Event umum{% endif %}
+  </div>
+  <div class="text-xs mt-2 inline-flex items-center gap-1"><svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>{{ a.deadline|date:"d M Y, H:i" }}</div>
+  <p class="text-xs opacity-70 mt-1 line-clamp-2">{{ a.deskripsi|truncatechars:120 }}</p>
+  <div class="flex gap-2 mt-3">
+    <a href="{% url 'announcements:detail' a.pk %}" class="btn btn-xs brutal-btn flex-1">Buka<svg class="icon ml-1" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></a>
+    <form method="post" action="{% url 'announcements:toggle_selesai' a.pk %}" class="flex-1">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="btn btn-xs {% if a.sudah_selesai %}btn-ghost{% else %}brutal-btn{% endif %} w-full inline-flex items-center justify-center gap-1">{% if a.sudah_selesai %}Batal selesai{% else %}<svg class="icon" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>Tandai selesai{% endif %}</button></form>
+  </div>
+  {% if is_staff %}
+  <div class="flex gap-1 mt-2">
+    <a href="{% url 'announcements:edit' a.pk %}" class="btn btn-xs btn-ghost">Edit</a>
+    <a href="{% url 'announcements:delete' a.pk %}" class="btn btn-xs btn-ghost text-error">Hapus</a>
+  </div>
+  {% endif %}
+</div>
+{% empty %}
+<div class="card brutal-card p-6 text-sm opacity-70 md:col-span-2">Kosong nih, belum ada pengumuman yang cocok. Coba ubah filter ya.</div>
+{% endfor %}
+</div>
+{% endblock %}
