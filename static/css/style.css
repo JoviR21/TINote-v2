@@ -74,6 +74,23 @@ h1 .icon, h2 .icon { vertical-align: -0.2em; }
 [data-theme="dark"] .otp-box:focus { background: #2a2a2a; }
 @media (max-width: 380px) { .otp-box { width: 2.6rem; height: 3.1rem; font-size: 1.3rem; } }
 
+/* Layar mungil ≤400px (misal HP 330px) — rapikan biar gak sempit/overflow */
+@media (max-width: 400px) {
+  body { overflow-x: hidden; }
+  main { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+  .card.p-6 { padding: 1rem !important; }
+  .card.p-8 { padding: 1.25rem !important; }
+  .text-6xl { font-size: 2.75rem; }
+  .otp-wrap { gap: 0.35rem; }
+  .otp-box { width: 2.35rem; height: 3rem; font-size: 1.2rem; }
+  .navbar { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .navbar .brutal-btn span { display: none; }
+  .navbar .brutal-btn { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .filter-pill { gap: 0.4rem; padding: 0.35rem; }
+  .filter-logo { width: 2.25rem; height: 2.25rem; }
+  .loading-card { padding: 1rem 1.25rem; }
+}
+
 /* Loading overlay — ngikut warna tema */
 .loading-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; background: rgba(17, 17, 17, 0.45); }
 .loading-overlay.show { display: flex; }
