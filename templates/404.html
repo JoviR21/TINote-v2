@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Nyasar — TINote{% endblock %}
+{% block content %}
+<div class="card brutal-card p-8 max-w-lg mx-auto text-center">
+  <div class="text-6xl font-bold">404</div>
+  <h1 class="text-xl font-bold mt-2">Ups, nyasar ya?</h1>
+  <p class="text-sm opacity-70 mt-1">Halaman yang kamu cari gak ada. Santai, 10 detik lagi balik ke dashboard otomatis.</p>
+  <div class="text-4xl font-bold my-4"><span id="cd">10</span></div>
+  <a href="{% url 'announcements:dashboard' %}" class="btn brutal-btn">Balik sekarang</a>
+</div>
+<script>
+(function () {
+  var n = 10, el = document.getElementById('cd');
+  var t = setInterval(function () {
+    n -= 1;
+    if (el) el.textContent = n;
+    if (n <= 0) { clearInterval(t); window.location.href = "{% url 'announcements:dashboard' %}"; }
+  }, 1000);
+})();
+</script>
+{% endblock %}
+{% block auth_content %}
+<div class="card brutal-card p-8 text-center">
+  <div class="text-6xl font-bold">404</div>
+  <h1 class="text-xl font-bold mt-2">Ups, nyasar ya?</h1>
+  <p class="text-sm opacity-70 mt-1">Halaman yang kamu cari gak ada. Santai, 10 detik lagi balik ke dashboard otomatis.</p>
+  <div class="text-4xl font-bold my-4"><span id="cd2">10</span></div>
+  <a href="{% url 'announcements:dashboard' %}" class="btn brutal-btn">Balik sekarang</a>
+</div>
+<script>
+(function () {
+  var n = 10, el = document.getElementById('cd2');
+  var t = setInterval(function () {
+    n -= 1;
+    if (el) el.textContent = n;
+    if (n <= 0) { clearInterval(t); window.location.href = "{% url 'announcements:dashboard' %}"; }
+  }, 1000);
+})();
+</script>
+{% endblock %}

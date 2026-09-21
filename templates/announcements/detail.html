@@ -30,7 +30,7 @@
 <div class="text-xs opacity-70 flex gap-2 items-center"><b>{{ k.penulis.nama }}</b><span>{{ k.penulis.nim }}</span><span class="ml-auto">{{ k.dibuat_pada|date:"d M H:i" }}</span></div>
 <p class="text-sm mt-1">{{ k.isi }}</p>
 {% if is_staff or k.penulis_id == user.id %}
-<form method="post" action="{% url 'announcements:komentar_delete' k.pk %}" class="mt-1">{% csrf_token %}<button class="btn btn-xs btn-ghost text-error">Hapus</button></form>
+<a href="{% url 'announcements:komentar_delete' k.pk %}" class="btn btn-xs btn-ghost text-error mt-1">Hapus</a>
 {% endif %}
 </div>
 {% empty %}<p class="text-sm opacity-60">Belum ada komentar, jadi yang pertama yuk.</p>

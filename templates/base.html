@@ -78,5 +78,12 @@ tailwind.config = { darkMode: ['class', '[data-theme="dark"]'] }
 </main>
 {% endif %}
 <script src="{% static 'js/theme.js' %}"></script>
+<div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+  <div class="loading-card">
+    <div class="loader-box"></div>
+    <div class="text-sm font-bold mt-3">Sabar ya, lagi loading...</div>
+  </div>
+</div>
+<script src="{% static 'js/loading.js' %}"></script>
 </body>
 </html>

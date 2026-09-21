@@ -66,6 +66,23 @@ h1 .icon, h2 .icon { vertical-align: -0.2em; }
 .done-card { opacity: .75; }
 .done-card .judul { text-decoration: line-through; }
 
+/* OTP PIN login — 6 box angka */
+.otp-wrap { display: flex; gap: 0.5rem; justify-content: space-between; }
+.otp-box { width: 3rem; height: 3.5rem; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid #111 !important; border-radius: 0.5rem; background: #fff; color: #111; box-shadow: 3px 3px 0 #111; caret-color: #111; }
+.otp-box:focus { outline: none; box-shadow: 4px 4px 0 #111; background: #FFF9E6; }
+[data-theme="dark"] .otp-box { background: #222; color: #f5f5f5; border-color: #f5f5f5 !important; box-shadow: 3px 3px 0 #000; caret-color: #FFD23F; }
+[data-theme="dark"] .otp-box:focus { background: #2a2a2a; }
+@media (max-width: 380px) { .otp-box { width: 2.6rem; height: 3.1rem; font-size: 1.3rem; } }
+
+/* Loading overlay — ngikut warna tema */
+.loading-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; background: rgba(17, 17, 17, 0.45); }
+.loading-overlay.show { display: flex; }
+.loading-card { background: #FFD23F; color: #111; border: 3px solid #111; border-radius: 0.75rem; box-shadow: 5px 5px 0 #111; padding: 1.5rem 2rem; display: flex; flex-direction: column; align-items: center; }
+[data-theme="dark"] .loading-card { background: #222; color: #FFD23F; border-color: #f5f5f5; box-shadow: 5px 5px 0 #000; }
+.loader-box { width: 2.5rem; height: 2.5rem; background: #111; border-radius: 0.4rem; animation: loader-spin 0.9s linear infinite; }
+[data-theme="dark"] .loader-box { background: #FFD23F; }
+@keyframes loader-spin { to { transform: rotate(360deg); border-radius: 50%; } }
+
 /* Matkul — agak besar biar nyaman di laptop, tetap proporsional */
 .matkul-card { line-height: 1.6; }
 .matkul-card .matkul-title { font-size: 1.05rem; line-height: 1.5; }
