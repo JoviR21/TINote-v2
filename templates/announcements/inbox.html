@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Inbox — TINote{% endblock %}
+{% block content %}
+<div class="flex flex-wrap gap-2 items-center mb-4">
+<h1 class="text-xl font-bold flex-1 inline-flex items-center gap-2"><svg class="icon icon-lg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>Notif Terbaru</h1>
+<form method="post">{% csrf_token %}<button class="btn btn-sm brutal-btn">Tandai semua dibaca</button></form>
+</div>
+
+<div class="card brutal-card p-4 mb-3">
+<h2 class="font-bold mb-2">Pengumuman baru</h2>
+<div class="space-y-2">
+{% for a in ann %}
+<div class="border-2 border-base-300 rounded-lg p-2 text-sm">
+<a href="{% url 'announcements:detail' a.pk %}" class="font-bold hover:underline">{{ a.judul }}</a>{% if a.baru %} <span class="badge badge-primary badge-sm">baru</span>{% endif %}
+<div class="text-xs opacity-70">{{ a.get_kategori_display }}{% if a.matkul %} • {{ a.matkul.kode }}{% endif %} • {{ a.dibuat_pada|date:"d M H:i" }}</div>
+</div>
+{% empty %}<p class="text-sm opacity-60">Belum ada pengumuman baru.</p>
+{% endfor %}
+</div>
+</div>
+
+<div class="card brutal-card p-4 mb-3">
+<h2 class="font-bold mb-2">Mata kuliah baru</h2>
+<div class="space-y-2">
+{% for m in mk %}
+<div class="border-2 border-base-300 rounded-lg p-2 text-sm">
+<a href="{% url 'matkul:list' %}" class="font-bold hover:underline">{{ m.kode }} — {{ m.nama }}</a>{% if m.baru %} <span class="badge badge-primary badge-sm">baru</span>{% endif %}
+<div class="text-xs opacity-70">{{ m.dosen }} • {{ m.sks }} SKS • {{ m.dibuat_pada|date:"d M H:i" }}</div>
+</div>
+{% empty %}<p class="text-sm opacity-60">Belum ada matkul baru.</p>
+{% endfor %}
+</div>
+</div>
+
+<div class="card brutal-card p-4">
+<h2 class="font-bold mb-2">Komentar baru</h2>
+<div class="space-y-2">
+{% for k in kom %}
+<div class="border-2 border-base-300 rounded-lg p-2 text-sm">
+{% if k.baru %}<span class="badge badge-primary badge-sm mb-1">baru</span><br>{% endif %}<a href="{% url 'announcements:detail' k.announcement_id %}" class="hover:underline"><b>{{ k.penulis.nama }}</b> di <b>{{ k.announcement.judul|truncatechars:40 }}</b></a>
+<p class="text-xs opacity-70 mt-1">"{{ k.isi|truncatechars:80 }}" • {{ k.dibuat_pada|date:"d M H:i" }}</p>
+</div>
+{% empty %}<p class="text-sm opacity-60">Belum ada komentar baru.</p>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

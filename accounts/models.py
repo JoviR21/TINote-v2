@@ -37,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    inbox_seen_at = models.DateTimeField(null=True, blank=True, help_text="Terakhir kali buka inbox.")
 
     objects = UserManager()
 

@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from matkul.models import MataKuliah
@@ -9,16 +9,36 @@ from .models import Announcement, Komentar, TandaiSelesai
 
 
 @login_required
+def inbox_view(request):
+    if request.method == "POST":
+        request.user.inbox_seen_at = timezone.now()
+        request.user.save(update_fields=["inbox_seen_at"])
+        messages.success(request, "Semua notif ditandai dibaca.")
+        return redirect("announcements:inbox")
+    ann = Announcement.objects.select_related("matkul").exclude(dibuat_oleh=request.user).order_by("-dibuat_pada")[:10]
+    mk = MataKuliah.objects.order_by("-dibuat_pada")[:10]
+    kom = Komentar.objects.select_related("penulis", "announcement").exclude(penulis=request.user).order_by("-dibuat_pada")[:10]
+    seen = request.user.inbox_seen_at
+    for a in ann:
+        a.baru = seen is None or a.dibuat_pada > seen
+    for m in mk:
+        m.baru = seen is None or m.dibuat_pada > seen
+    for k in kom:
+        k.baru = seen is None or k.dibuat_pada > seen
+    return render(request, "announcements/inbox.html", {
+        "ann": ann, "mk": mk, "kom": kom, "seen": seen,
+        "is_staff": request.user.role == "staff",
+    })
+
+
+@login_required
 def dashboard_view(request):
-    q = request.GET.get("q", "").strip()
     matkul_id = request.GET.get("matkul", "").strip()
     urut = request.GET.get("urut", "terdekat")
 
     items = Announcement.objects.select_related("matkul", "dibuat_oleh").annotate(
         jumlah_komentar=Count("komentars")
     )
-    if q:
-        items = items.filter(Q(judul__icontains=q) | Q(deskripsi__icontains=q))
     if matkul_id.isdigit():
         items = items.filter(matkul_id=int(matkul_id))
     items = items.order_by("deadline" if urut != "terjauh" else "-deadline")
@@ -32,6 +52,7 @@ def dashboard_view(request):
 
     for a in items:
         a.sudah_selesai = a.id in done_ids
+        a.terlambat = (a.id not in done_ids) and a.sudah_lewat
         label, warna = a.badge_deadline()
         a.badge_label = label
         a.badge_warna = warna
@@ -39,7 +60,6 @@ def dashboard_view(request):
     context = {
         "items": items,
         "matkuls": MataKuliah.objects.all(),
-        "q": q,
         "matkul_id": matkul_id,
         "urut": urut,
         "is_staff": request.user.role == "staff",

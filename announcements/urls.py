@@ -5,6 +5,7 @@ app_name = "announcements"
 
 urlpatterns = [
     path("dashboard/", views.dashboard_view, name="dashboard"),
+    path("inbox/", views.inbox_view, name="inbox"),
     path("announcement/tambah/", views.announcement_create_view, name="create"),
     path("announcement/<int:pk>/", views.detail_view, name="detail"),
     path("announcement/<int:pk>/edit/", views.announcement_edit_view, name="edit"),
